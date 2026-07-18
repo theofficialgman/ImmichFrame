@@ -58,6 +58,7 @@
 
 	let debug = false;
 	const isVideo = $derived(isVideoAsset(asset[1]));
+	let mediaLoaded = $state(false);
 
 	// Re-evaluate only when the asset changes; keep the interval stable for the
 	// lifetime of the current asset so zoom/pan animations don't restart.
@@ -260,6 +261,7 @@
 						}
 					}
 				}}
+				onloadeddata={() => (mediaLoaded = true)}
 				onerror={() => {
 					console.error('Video failed to load:', asset[0]);
 					onAssetError();
@@ -274,6 +276,8 @@
 					: 'max-h-screen h-dvh-safe max-w-full object-contain'} w-full h-full"
 				src={asset[0]}
 				alt="data"
+				decoding="async"
+				onload={() => (mediaLoaded = true)}
 				onerror={() => {
 					console.error('Image failed to load:', asset[0]);
 					onAssetError();
@@ -293,51 +297,56 @@
 	{showAlbumName}
 	{split}
 />
-<img class="absolute flex w-full h-full z-[-1]" src={thumbhashUrl} alt="data" />
+{#if !mediaLoaded}
+	<img class="absolute flex w-full h-full z-[-1]" src={thumbhashUrl} alt="data" />
+{/if}
 
 <style>
 	.zoom {
 		animation: zoom var(--interval) ease-out forwards;
 		transform-origin: var(--originX, center) var(--originY, center);
+		will-change: transform;
 	}
 
 	.pan {
 		animation: pan var(--interval) ease-in-out forwards;
+		will-change: transform;
 	}
 
 	.zoom.pan {
 		animation: zoom-pan var(--interval) ease-in-out forwards;
 		transform-origin: var(--originX, center) var(--originY, center);
+		will-change: transform;
 	}
 
 	@keyframes zoom {
 		from {
-			transform: scale(var(--start-scale, 1));
+			transform: scale3d(var(--start-scale, 1), var(--start-scale, 1), 1);
 		}
 		to {
-			transform: scale(var(--end-scale, 1.3));
+			transform: scale3d(var(--end-scale, 1.3), var(--end-scale, 1.3), 1);
 		}
 	}
 
 	@keyframes pan {
 		from {
-			transform: translateX(var(--pan-start-x, 0)) translateY(var(--pan-start-y, 0))
-				scale(var(--start-scale, 1));
+			transform: translate3d(var(--pan-start-x, 0), var(--pan-start-y, 0), 0)
+				scale3d(var(--start-scale, 1), var(--start-scale, 1), 1);
 		}
 		to {
-			transform: translateX(var(--pan-end-x, 0)) translateY(var(--pan-end-y, 0))
-				scale(var(--end-scale, 1));
+			transform: translate3d(var(--pan-end-x, 0), var(--pan-end-y, 0), 0)
+				scale3d(var(--end-scale, 1), var(--end-scale, 1), 1);
 		}
 	}
 
 	@keyframes zoom-pan {
 		from {
-			transform: translateX(var(--pan-start-x, 0)) translateY(var(--pan-start-y, 0))
-				scale(var(--start-scale, 1));
+			transform: translate3d(var(--pan-start-x, 0), var(--pan-start-y, 0), 0)
+				scale3d(var(--start-scale, 1), var(--start-scale, 1), 1);
 		}
 		to {
-			transform: translateX(var(--pan-end-x, 0)) translateY(var(--pan-end-y, 0))
-				scale(var(--end-scale, 1.3));
+			transform: translate3d(var(--pan-end-x, 0), var(--pan-end-y, 0), 0)
+				scale3d(var(--end-scale, 1.3), var(--end-scale, 1.3), 1);
 		}
 	}
 </style>
