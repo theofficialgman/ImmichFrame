@@ -58,7 +58,6 @@
 
 	let debug = false;
 	const isVideo = $derived(isVideoAsset(asset[1]));
-	let mediaLoaded = $state(false);
 
 	// Re-evaluate only when the asset changes; keep the interval stable for the
 	// lifetime of the current asset so zoom/pan animations don't restart.
@@ -261,7 +260,6 @@
 						}
 					}
 				}}
-				onloadeddata={() => (mediaLoaded = true)}
 				onerror={() => {
 					console.error('Video failed to load:', asset[0]);
 					onAssetError();
@@ -276,8 +274,6 @@
 					: 'max-h-screen h-dvh-safe max-w-full object-contain'} w-full h-full"
 				src={asset[0]}
 				alt="data"
-				decoding="async"
-				onload={() => (mediaLoaded = true)}
 				onerror={() => {
 					console.error('Image failed to load:', asset[0]);
 					onAssetError();
@@ -297,9 +293,7 @@
 	{showAlbumName}
 	{split}
 />
-{#if !mediaLoaded}
-	<img class="absolute flex w-full h-full z-[-1]" src={thumbhashUrl} alt="data" />
-{/if}
+<img class="absolute flex w-full h-full z-[-1]" src={thumbhashUrl} alt="data" />
 
 <style>
 	.zoom {
