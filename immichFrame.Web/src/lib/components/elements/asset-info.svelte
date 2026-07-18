@@ -16,7 +16,6 @@
 		showTagsDesc: boolean;
 		showAlbumName: boolean;
 		split: boolean;
-		thumbhashUrl?: string;
 	}
 
 	let {
@@ -29,7 +28,6 @@
 		showTagsDesc,
 		showAlbumName,
 		split,
-		thumbhashUrl = '',
 	}: Props = $props();
 
 	function formatLocation(format: string, city?: string, state?: string, country?: string) {
@@ -78,10 +76,7 @@
 		class="immichframe_image_metadata absolute bottom-0 right-0 z-100 text-primary p-1 text-right
 		{$configStore.style == 'solid' ? 'bg-secondary rounded-tl-2xl' : ''}
 		{$configStore.style == 'transition' ? 'bg-gradient-to-l from-secondary from-0% pl-10' : ''}
-		{$configStore.style == 'blur' ? 'bg-cover bg-center rounded-tl-2xl' : ''}	"
-		style={$configStore.style == 'blur' && thumbhashUrl
-			? `background-image: url("${thumbhashUrl}");`
-			: undefined}
+		{$configStore.style == 'blur' ? 'backdrop-blur-lg rounded-tl-2xl [transform:translateZ(0)] will-change-[transform,backdrop-filter]' : ''}	"
 	>
 		{#if showPhotoDate && formattedDate}
 			<p id="photodate" class="info-item">

@@ -292,7 +292,6 @@
 	{showTagsDesc}
 	{showAlbumName}
 	{split}
-	{thumbhashUrl}
 />
 <img class="absolute flex w-full h-full z-[-1]" src={thumbhashUrl} alt="data" />
 
