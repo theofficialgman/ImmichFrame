@@ -305,48 +305,45 @@
 	.zoom {
 		animation: zoom var(--interval) ease-out forwards;
 		transform-origin: var(--originX, center) var(--originY, center);
-		will-change: transform;
 	}
 
 	.pan {
 		animation: pan var(--interval) ease-in-out forwards;
-		will-change: transform;
 	}
 
 	.zoom.pan {
 		animation: zoom-pan var(--interval) ease-in-out forwards;
 		transform-origin: var(--originX, center) var(--originY, center);
-		will-change: transform;
 	}
 
 	@keyframes zoom {
 		from {
-			transform: scale3d(var(--start-scale, 1), var(--start-scale, 1), 1);
+			transform: scale(var(--start-scale, 1));
 		}
 		to {
-			transform: scale3d(var(--end-scale, 1.3), var(--end-scale, 1.3), 1);
+			transform: scale(var(--end-scale, 1.3));
 		}
 	}
 
 	@keyframes pan {
 		from {
-			transform: translate3d(var(--pan-start-x, 0), var(--pan-start-y, 0), 0)
-				scale3d(var(--start-scale, 1), var(--start-scale, 1), 1);
+			transform: translateX(var(--pan-start-x, 0)) translateY(var(--pan-start-y, 0))
+				scale(var(--start-scale, 1));
 		}
 		to {
-			transform: translate3d(var(--pan-end-x, 0), var(--pan-end-y, 0), 0)
-				scale3d(var(--end-scale, 1), var(--end-scale, 1), 1);
+			transform: translateX(var(--pan-end-x, 0)) translateY(var(--pan-end-y, 0))
+				scale(var(--end-scale, 1));
 		}
 	}
 
 	@keyframes zoom-pan {
 		from {
-			transform: translate3d(var(--pan-start-x, 0), var(--pan-start-y, 0), 0)
-				scale3d(var(--start-scale, 1), var(--start-scale, 1), 1);
+			transform: translateX(var(--pan-start-x, 0)) translateY(var(--pan-start-y, 0))
+				scale(var(--start-scale, 1));
 		}
 		to {
-			transform: translate3d(var(--pan-end-x, 0), var(--pan-end-y, 0), 0)
-				scale3d(var(--end-scale, 1.3), var(--end-scale, 1.3), 1);
+			transform: translateX(var(--pan-end-x, 0)) translateY(var(--pan-end-y, 0))
+				scale(var(--end-scale, 1.3));
 		}
 	}
 </style>
